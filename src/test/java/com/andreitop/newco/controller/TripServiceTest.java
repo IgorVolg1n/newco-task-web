@@ -12,7 +12,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
@@ -26,11 +27,12 @@ public class TripServiceTest {
     public void whenFindAll_returnList() {
         when(tripRepository.findAll()).thenReturn(new ArrayList<TripDto>());
         List<TripDto> tripDtoList = tripRepository.findAll();
+
         assertNotNull(tripDtoList);
+        assertEquals(0, tripDtoList.size());
+
         verify(tripRepository, times(1)).findAll();
         verifyNoMoreInteractions(tripRepository);
-        assertTrue(tripDtoList instanceof List<?>);
-        assertEquals(0, tripDtoList.size());
     }
 
     @Test
