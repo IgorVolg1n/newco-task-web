@@ -10,16 +10,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+
 import java.util.Collections;
 import java.util.List;
+
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(TripsController.class)
@@ -63,5 +62,38 @@ public class TripsControllerTest {
                 .andExpect(jsonPath("$[0].origin", is("MOW")))
                 .andExpect(jsonPath("$[0].destination", is("LED")))
                 .andExpect(jsonPath("$[0].price", is(4232)));
+    }
+
+    @Test
+    public void givenTrips_whenFindById_thenReturnJson() throws Exception {
+
+        TripDto tripDto = new TripDto();
+        tripDto.setId(2L);
+        tripDto.setOrigin("LED");
+        tripDto.setDestination("MOW");
+        tripDto.setPrice(5464);
+
+        List<TripDto> allTrips = Collections.singletonList(tripDto);
+        given(tripService.findById(2L)).willReturn(allTrips.get(0));
+
+        mockMvc.perform(get(API_URL + "/2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id", is(2)));
+    }
+
+    @Test
+    public void whenDelete_thenStatusIsNoContent() throws Exception {
+
+        mockMvc.perform(delete(API_URL + "/1"))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void whenUpdateTrip_thenStatusIsOk() throws Exception {
+
+        mockMvc.perform(put(API_URL)
+                .contentType(CONTENT_TYPE)
+                .content(TRIP_JSON))
+                .andExpect(status().isOk());
     }
 }
