@@ -44,31 +44,54 @@ public class TripServiceTest {
 
         TripDto tripDto = new TripDto();
         tripDto.setId(2L);
-        tripDto.setOrigin("LED");
-        tripDto.setDestination("MOW");
-        tripDto.setPrice(5464);
 
         when(tripRepository.findById(2L)).thenReturn(tripDto);
 
         TripDto testTrip = tripService.findById(2L);
+        assertNotNull(testTrip);
         assertTrue(testTrip instanceof TripDto);
         assertEquals(new Long(2L), testTrip.getId());
+
+        verify(tripRepository, times(1)).findById(2L);
+        verifyNoMoreInteractions(tripRepository);
     }
 
     @Test
-    public void whenSaveTrip_createNewTrip() {
+    public void whenSaveTrip_methodIsInvoked() {
         tripService = new TripService(tripRepository);
 
         TripDto tripDto = new TripDto();
-        tripDto.setId(2L);
-        tripDto.setOrigin("LED");
-        tripDto.setDestination("MOW");
-        tripDto.setPrice(5464);
 
         doNothing().when(tripRepository).save(tripDto);
         tripService.save(tripDto);
 
         verify(tripRepository, times(1)).save(tripDto);
+        verifyNoMoreInteractions(tripRepository);
+    }
+
+    @Test
+    public void whenDeleteTrip_methodIsInvoked() {
+        tripService = new TripService(tripRepository);
+
+        TripDto tripDto = new TripDto();
+
+        doNothing().when(tripRepository).delete(anyLong());
+        tripService.delete(anyLong());
+
+        verify(tripRepository, times(1)).delete(anyLong());
+        verifyNoMoreInteractions(tripRepository);
+    }
+
+    @Test
+    public void whenUpdateTrip_methodIsInvoked() {
+        tripService = new TripService(tripRepository);
+
+        TripDto tripDto = new TripDto();
+
+        doNothing().when(tripRepository).update(tripDto);
+        tripService.update(tripDto);
+
+        verify(tripRepository, times(1)).update(tripDto);
         verifyNoMoreInteractions(tripRepository);
     }
 }
