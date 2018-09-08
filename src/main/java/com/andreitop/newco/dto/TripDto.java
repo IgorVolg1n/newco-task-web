@@ -14,7 +14,7 @@ public class TripDto extends AbstractEntity {
     private String origin;
 
     @Size(min = 3, max = 20)
-    @Pattern(regexp = "([a-zA-Z]+)")
+    @Pattern(regexp = "/^[A-Z]{3}$/", message = "IATA airport code should be right format")
     private String destination;
 
     @Min(0)
