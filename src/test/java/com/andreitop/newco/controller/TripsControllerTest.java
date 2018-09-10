@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(TripsController.class)
 public class TripsControllerTest {
 
-    private static final String TRIP_JSON = "{\"origin\": \"LED\" , \"destination\":\"MOW\", \"price\" : 12256}";
+    private static final String TRIP_JSON = "{\"id\": \"1\" ,\"origin\": \"LED\" , \"destination\":\"MOW\", \"price\" : 12256}";
     private static final String CONTENT_TYPE = "application/json;charset=UTF-8";
     private static final String API_URL = ApiConstant.API_V_1 + "/trips";
 

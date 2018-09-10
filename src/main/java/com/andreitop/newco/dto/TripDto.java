@@ -3,18 +3,15 @@ package com.andreitop.newco.dto;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 public class TripDto extends AbstractEntity {
 
     private static final long serialVersionUID = 5914366185889783660L;
 
-    @Size(min = 3, max = 20)
-    @Pattern(regexp = "([a-zA-Z]+)")
+    @Pattern(regexp = "(^[A-Z]{3}$)", message = "IATA airport code should be right format")
     private String origin;
 
-    @Size(min = 3, max = 20)
-    @Pattern(regexp = "/^[A-Z]{3}$/", message = "IATA airport code should be right format")
+    @Pattern(regexp = "(^[A-Z]{3}$)", message = "IATA airport code should be right format")
     private String destination;
 
     @Min(0)
